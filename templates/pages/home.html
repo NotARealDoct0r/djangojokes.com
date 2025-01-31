@@ -1,8 +1,12 @@
 {% extends "_base.html" %}
+<!-- loads the common_tags.py file -->
+{% load common_tags %}
 
 {% block title %}Home{% endblock %}
 <!-- {% block header %}Welcome!{% endblock %} -->
 {% block main %}
     <h2>Welcome!</h2>
     <p>Ready to laugh?</p>
+<!-- custom tag -->
+{% random_joke %}
 {% endblock %}
