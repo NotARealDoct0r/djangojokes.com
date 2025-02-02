@@ -2,11 +2,11 @@ from django.contrib import admin
 from django.contrib.auth import get_user_model
 from django.contrib.auth.admin import UserAdmin
 
-CustomUser = get_user_model()
+User = get_user_model()
 
-@admin.register(CustomUser)
+@admin.register(User)
 class CustomUserAdmin(UserAdmin):
-    model = CustomUser
+    model = User
 
     add_fieldsets = UserAdmin.add_fieldsets + (
         ('Optional Fields', {
