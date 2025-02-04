@@ -60,8 +60,6 @@ cover/
 local_settings.py
 db.sqlite3
 db.sqlite3-journal
-
-# Ignore local Django settings file containing sensitive info
 settings.py
 
 # Flask stuff:
