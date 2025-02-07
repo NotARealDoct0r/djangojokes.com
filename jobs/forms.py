@@ -1,43 +1,54 @@
 from datetime import datetime
 from django import forms
+from django.core.exceptions import ValidationError
+from django.core.validators import URLValidator
+
+def validate_future_date(value):
+    if value < datetime.now().date():
+        raise ValidationError(
+            message=f'{value} is in the past.', code='past_date'
+        )
+    
 
 class JobApplicationForm(forms.Form):
-    JOB_TYPES = (
+    EMPLOYMENT_TYPES = (
         (None, '--Please choose--'),
-        ('ft', 'Full-Time'),
-        ('pt', 'Part-Time'),
+        ('ft', 'Full-time'),
+        ('pt', 'Part-time'),
         ('contract', 'Contract work')
     )
 
     DAYS = (
-        ('1', 'MON'),
-        ('2', 'TUES'),
-        ('3', 'WED'),
-        ('4', 'THU'),
-        ('5', 'FRI'),
-        ('6', 'SAT'),
-        ('7', 'SUN')
+        (1, 'MON'),
+        (2, 'TUE'),
+        (3, 'WED'),
+        (4, 'THU'),
+        (5, 'FRI')
     )
-
+    
     YEARS = range(datetime.now().year, datetime.now().year+2)
 
     first_name = forms.CharField(
-        widget=forms.TextInput(attrs={'autofocus': True})
+       widget=forms.TextInput(attrs={'autofocus': True})
     )
     last_name = forms.CharField()
     email = forms.EmailField()
-    website = forms.URLField(
+    website = forms.CharField(
         required=False,
-        widget=forms.URLInput(
-            attrs={'placeholder': 'https://www.example.com', 'size': '50'}
-        )
+        widget=forms.TextInput(
+            attrs={'placeholder':'https://www.example.com', 'size':'50'}
+        ),
+        validators=[URLValidator(schemes=['http', 'https'])]
     )
-    employment_type = forms.ChoiceField(choices= JOB_TYPES)
+    employment_type = forms.ChoiceField(choices=EMPLOYMENT_TYPES)
     start_date = forms.DateField(
         help_text='The earliest date you can start working.',
         widget=forms.SelectDateWidget(
-            years=YEARS
-        )
+            years=YEARS,
+            attrs={'style': 'width: 31%; display: inline-block; margin: 0 1%'}
+        ),
+        validators=[validate_future_date],
+        error_messages = {'past_date': 'Please enter a future date.'}
     )
     available_days = forms.TypedMultipleChoiceField(
         choices=DAYS,
