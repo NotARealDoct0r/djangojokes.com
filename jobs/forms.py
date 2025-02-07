@@ -4,19 +4,19 @@ from django import forms
 class JobApplicationForm(forms.Form):
     JOB_TYPES = (
         (None, '--Please choose--'),
-        ('full_time', 'Full-Time'),
-        ('part_time', 'Part-Time'),
-        ('contract_work', 'Contract work')
+        ('ft', 'Full-Time'),
+        ('pt', 'Part-Time'),
+        ('contract', 'Contract work')
     )
 
     DAYS = (
-        ('monday', 'MON'),
-        ('tuesday', 'TUES'),
-        ('wednesday', 'WED'),
-        ('thursday', 'THU'),
-        ('friday', 'FRI'),
-        ('saturday', 'SAT'),
-        ('sunday', 'SUN')
+        ('1', 'MON'),
+        ('2', 'TUES'),
+        ('3', 'WED'),
+        ('4', 'THU'),
+        ('5', 'FRI'),
+        ('6', 'SAT'),
+        ('7', 'SUN')
     )
 
     YEARS = range(datetime.now().year, datetime.now().year+2)
