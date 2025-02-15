@@ -79,8 +79,6 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-MESSAGE_LEVEL = 10  # DEBUG
-
 ROOT_URLCONF = 'djangojokes.urls'
 
 TEMPLATES = [
