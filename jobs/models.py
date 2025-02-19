@@ -1,5 +1,7 @@
 import filetype
-from djangojokes.storage_backends import PrivateMediaStorage
+from private_storage.fields import PrivateFileField
+# (AWS S3 upload issue - instructor advised to revert back to local files)
+# from djangojokes.storage_backends import PrivateMediaStorage
 
 from datetime import datetime
 
@@ -49,7 +51,7 @@ class Applicant(models.Model):
     desired_hourly_wage = models.DecimalField(max_digits=5, decimal_places=2)
     cover_letter = models.TextField()
     resume = models.FileField(
-        storage = PrivateMediaStorage(),
+        storage = PrivateFileField(),
         upload_to='resumes', blank=True, help_text='PDFs only',
         validators=[validate_pdf]
     )

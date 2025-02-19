@@ -53,7 +53,8 @@ INSTALLED_APPS = [
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
-    'storages',
+    'private_storage',
+    # 'storages', - (AWS S3 upload issue - instructor advised revert to local files)
 
     # Local apps
     'common.apps.CommonConfig',
@@ -181,30 +182,39 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
-AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
-AWS_STORAGE_BUCKET_NAME = 'djangojokesproject'
-AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
-AWS_S3_SIGNATURE_VERSION = 's3v4'
-AWS_DEFAULT_ACL = None # Use S3 bucket's setting
+# --AWS S3 upload issue (instructor advised to use local files)--
 
-AWS_S3_OBJECT_PARAMETERS = {
-    'CacheControl': 'max-age=86400',
-}
-AWS_S3_REGION_NAME = 'us-east-2'
+# AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
+# AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
+# AWS_STORAGE_BUCKET_NAME = 'djangojokesproject'
+# AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
+# AWS_S3_SIGNATURE_VERSION = 's3v4'
+# AWS_DEFAULT_ACL = None # Use S3 bucket's setting
 
-STATICFILES_STORAGE = 'djangojokes.storage_backends.StaticStorage'
-DEFAULT_FILE_STORAGE = 'djangojokes.storage_backends.PublicMediaStorage'
-PRIVATE_FILE_STORAGE = 'djangojokes.storage_backends.PrivateMediaStorage'
+# AWS_S3_OBJECT_PARAMETERS = {
+#     'CacheControl': 'max-age=86400',
+# }
+# AWS_S3_REGION_NAME = 'us-east-2'
 
-STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/static/'
-MEDIA_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/media/"
+STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
+DEFAULT_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'
+# PRIVATE_FILE_STORAGE = 'djangojokes.storage_backends.PrivateMediaStorage'
+
+# STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/static/'
+# MEDIA_URL = f"https://{AWS_S3_CUSTOM_DOMAIN}/media/"
+
+STATIC_URL = '/static/'
 
 STATICFILES_DIRS = [
     BASE_DIR / 'static',
 ]
 
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
 
+# private-storage settings
+PRIVATE_STORAGE_ROOT = MEDIA_ROOT / 'private/'
+PRIVATE_STORAGE_AUTH_FUNCTION = 'private_storage.permissions.allow_staff'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
