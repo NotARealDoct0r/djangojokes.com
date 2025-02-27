@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 import os
+import dj_database_url
 from dotenv import load_dotenv
 from django.core.exceptions import ImproperlyConfigured
 from pathlib import Path
@@ -30,9 +31,9 @@ if SECRET_KEY is None:
     raise ImproperlyConfigured("DJANGO_SECRET_KEY environment variable not set.")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['djangojokesproject.herokuapp.com']
 
 INTERNAL_IPS = [ # Necessary for the Debug Toolbar
     '127.0.0.1',
@@ -109,16 +110,18 @@ WSGI_APPLICATION = 'djangojokes.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'jokes',
-        'USER': 'postgres',
-        'PASSWORD': os.environ.get('DATABASE_PASSWORD'),
-        'HOST': 'localhost',
-        'PORT': 5432
-    }
-}
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'jokes',
+#         'USER': 'postgres',
+#         'PASSWORD': os.environ.get('DATABASE_PASSWORD'),
+#         'HOST': 'localhost',
+#         'PORT': 5432
+#     }
+# }
+
+DATABASES = { 'default' : dj_database_url.config()}
 
 # EMAIL
 SENDGRID_API_KEY = os.environ.get('SENDGRID_API_KEY')
